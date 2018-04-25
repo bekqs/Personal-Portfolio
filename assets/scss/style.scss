@@ -1,0 +1,503 @@
+@import "libraries/bourbon/bourbon";
+@import "libraries/neat/neat";
+@import "_reset";
+@import "_variables";
+@import "_mixins";
+@import "_keyframes";
+
+* {
+    font-family: 'Roboto', $font-stack-helvetica;
+    color: $black;
+    font-weight: normal;
+}
+
+@for $i from 1 through 6 {
+    h#{$i} {
+      font-size: $base-font-size + $heading-scale * (6 - $i);
+    }
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: 500;
+}
+
+p, a, label {
+    line-height: $lh;
+    letter-spacing: .02em;
+    &.label {
+        font-weight: 500;
+    }
+}
+
+a {
+    &:hover {
+        text-decoration: underline;
+    }
+    a:visited {
+        color: inherit;
+    }
+    &.button {
+        display: inline-block;
+        transition: all ease-out .2s;
+        &:after, &:before {
+            content: "";
+            height: 1px;
+            background: $gray;
+            display: inline-block;
+            position: relative;
+            bottom: 3px;
+            transition: all ease-out .2s;
+        }
+        &:after {
+            width: 1em;
+            margin-left: .6em;
+        }
+        &:before {
+            width: 0;
+            margin-right: 0;
+        }
+        &:hover {
+            color: $accent;
+            text-decoration: none;
+            &:after {
+                width: 0;
+                margin-left: 0;
+            }
+            &:hover:before {
+                width: 2em;
+                margin-right: .6em;
+                background: $accent;
+            }
+        }
+    }
+}
+
+#main {
+    background: $white;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    overflow: hidden;
+    @include grid-container;
+    @media screen and (max-width: 768px){
+        overflow-y: auto;
+    }
+    section {
+        height: 100vh;
+    }
+    #zero {
+        background: $white;
+        @include grid-column(4);
+        #logo img {
+            position: fixed;
+            top: 4em; 
+            left: 4em;
+            z-index: 6;
+        }
+        figure {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            img {
+                flex-shrink: 0;
+                min-width: 100%;
+                min-height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    #one {
+        background: $accent;
+        @include grid-column(2.5);
+        h5 {
+            color: $white;
+            text-align: right;
+        }
+        #slider-nav {
+            position: absolute;
+            bottom: 0;
+            height: 6em;
+            width: 100%;
+            background: rgba($color: #000, $alpha: .02);
+            z-index: 2;
+            a {
+                float: left;
+                display: block;
+                position: relative;
+                width: 50%;
+                height: 100%;
+                overflow: hidden;
+                &:nth-child(1):before, &:nth-child(2):before {
+                    content: "";
+                    width: 100%;
+                    height: inherit;
+                    background: $hover;
+                    position: absolute;
+                }
+                &:nth-child(1):before {
+                    transform: translateX(-100%);
+                    animation: slide-out-left .4s forwards;
+                }
+                &:nth-child(2):before {
+                    transform: translateX(100%);
+                    animation: slide-out-right .4s forwards;
+                }
+                &:hover {
+                    &:nth-child(1):before {
+                        animation: slide-left 1s forwards;
+                    }
+                    &:nth-child(2):before {
+                        animation: slide-right 1s forwards;
+                    }
+                }
+                .arrows {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%) rotate(45deg);
+                    height: 6px; 
+                    width: 6px;
+                    border: 2px solid $white;
+                }
+                #arrow-left {
+                    border-width: 0 0 1px 1px;
+                }
+                #arrow-right {
+                    border-width: 1px 1px 0 0;
+                }
+            }
+        }
+    }
+
+    #two {
+        background: $white;    
+        @include grid-column(3.5);
+        h6 {
+            margin: 1em 0 4em;
+        }
+    }
+
+    #three {
+        background: $white;
+        @include grid-column(2);
+        #bars {
+            visibility: hidden;
+            position: absolute;
+            &:checked {
+                ~ nav {
+                transform: translateX(0);
+                }
+                ~ label .bar {
+                    background: $accent;
+                }
+                ~ nav:after {
+                    transform: translateX(-110%);
+                }
+            }
+            ~ label {
+                position: fixed;
+                top: 4em;
+                right: 2em;
+                width: 2em;
+                z-index: 7;
+                cursor: pointer;
+                &:hover .bar {
+                    background: $hover;
+                }
+            }
+        }
+        .bar {
+            float: right;
+            margin: 1px 0;
+            height: 2px;
+            width: 90%;
+            border-radius: 2px;
+            background: $accent;
+            transition: all ease-out .2s;
+            &:nth-child(2) {
+                width: 65%;
+                transition-delay: .1s;
+            }
+            &:nth-child(3) {
+                width: 80%;
+                transition-delay: .2s;
+            }
+        }
+        nav {
+            display: block;
+            position: fixed;
+            transform: translateX(100%);
+            top: 0;
+            height: 100vh;
+            width: inherit;
+            background: $nav-bg;
+            text-align: right;
+            overflow: hidden;
+            z-index: 3;
+            transition: all ease-out .4s;
+            &:after {
+                content: "";
+                position: absolute;
+                display: block;
+                width: 200%;
+                height: 100%;
+                transform: translateX(0);
+                background: inherit;
+                transition: all ease-out .5s .4s;
+            }
+            .nav-wrap {
+                width: initial;
+                position: relative;
+                top: 50%;
+                right: 2em;
+                transform: translateY(-50%);
+                float: right;
+                a {
+                    display: block;
+                    transform: inherit !important;
+                }
+                span {
+                    display: block;
+                    height: 3em;
+                }
+            }
+            footer {
+                position: absolute;
+                bottom: 2em;
+                right: 2em;
+                p {
+                    font-size: 90%;
+                }
+            }
+        }
+
+        ul {
+            float: right;
+            display: table;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 2em;
+            z-index: 1;
+            li {
+                display: table-row;
+                vertical-align: middle;
+                width: 100%;
+                label {
+                    float: right;
+                    display: block;
+                    position: relative;
+                    height: 2em;
+                    width: 2em;
+                    border-bottom: 1px solid $light-gray;
+                    color: $accent;
+                    margin: .5em 0;
+                    cursor: pointer;
+                    transition: all ease-out .4s;
+                    &:hover {
+                        border-color: $gray;
+                    }
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        right: 100%;
+                        top: 1em;
+                        transition: all ease-out .4s;
+                    }
+                }
+                input {
+                    visibility: hidden;
+                    &:checked + label {
+                        width: 4em;
+                        border-color: $accent;
+                        &:before {
+                            content: attr(data-number);
+                            right: 6em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    #about-head {
+        width: 100%;
+        height: 100vh;
+        background: $about-bg;
+        position: absolute;
+        left: 100%;
+        transition: all ease-out .8s;
+        &.about-active {
+            left: 0;
+            h5 {
+                opacity: 1;
+            }
+        }
+        h5 {
+            color: $white;
+            text-align: right;
+            opacity: 0;
+            transition: all ease-out .5s 1s;
+        }
+    }
+    #about {
+        position: absolute;
+        background: $white;
+        right: -100%;
+        z-index: 2;
+        transition: all ease-out .8s;
+        &.about-active {
+            right: 0;
+            #about-bio {
+                opacity: 1;
+            }
+        }
+        @include grid-column(8);
+        #about-bio {
+            @include grid-column(10);
+            background: $white;
+            opacity: 0;
+            transition: all ease-out .5s 1s;
+            #bio {
+                margin-top: 4em;
+                width: 80%;
+            }
+            #contact, #skills, #links {
+                margin: 4em 0;
+                float: left;
+                width: (100% / 3);
+            }
+            a {
+                float: left;
+                clear: both;
+            }
+        }
+    }
+
+    #zero, #one, #two {
+        position: relative;
+        overflow: hidden;
+        .cover {
+            position: absolute;
+            background: inherit;
+            width: 120%;
+            height: 100%;
+            transform: translateX(-100%);
+            z-index: 1;
+            &.right {
+                transform: translateX(-100%);
+                &.active {
+                    transform: translateX(100%);
+                }
+            }
+            &.left {
+                transform: translateX(100%);
+                &.active {
+                    transform: translateX(-100%);
+                }
+            }
+            &.active {
+                transition: all ease-out 1.6s;
+            }
+        }
+    }
+
+    #zero, #one, #two, #three, #about {
+        .wrap {
+            padding: 8em 4em 4em;
+            .meta {
+                margin: 1em 0;
+                p.label {
+                    line-height: ($lh + .5);
+                }
+                a.button {
+                    margin-top: 2em;
+                }
+            }
+            .close {
+                margin-bottom: 4em;
+            }
+        }
+        @media screen and (max-width: 768px){
+            @include grid-column(12);
+            &#zero {
+                height: 100vh;
+                #logo {
+                    position: fixed;
+                    width: 100%;
+                    height: 5.3em;
+                    background: $white;
+                    box-shadow: 0 0 3px rgba($color: #000, $alpha: .1);
+                    z-index: 6;
+                    img {
+                        top: 2em;
+                        left: 2em;
+                    }
+                }
+                figure {
+                    margin-top: 5.3em;
+                }
+                #about-head {
+                    margin-top: 5.3em;
+                    height: 7em;
+                    z-index: 3;
+                    position: fixed;
+                    h5 {
+                        text-align: left;
+                    }
+                }
+            }
+            &#one {
+                position: fixed;
+                height: 13em;
+                bottom: 0;
+                z-index: 1;
+                h5 {
+                    position: absolute;
+                    top: (2em/3);
+                    right: (2em/3);
+                }
+            }
+            &#two {
+                height: auto;
+                margin-bottom: 13em;
+                z-index: 2;
+            }
+            &#three {
+                height: auto;
+                ul {
+                    display: none;
+                }
+                #bars ~label {
+                    top: 2.5em;
+                }
+            }
+            &#about {
+                height: 100%;
+                position: fixed;
+                overflow: auto;
+                #about-bio {
+                    @include grid-column(12);
+                    margin-top: 7.3em;
+                    #bio {
+                        width: 100%;
+                    }
+                    #contact, #skills, #links {
+                        margin: 2em 0 0;
+                        width: 100%;
+                    }
+                    .close {
+                        margin-top: 4em;
+                    }
+                }
+            }
+            .wrap {
+                padding: 2em;
+            }
+        }
+    }
+}

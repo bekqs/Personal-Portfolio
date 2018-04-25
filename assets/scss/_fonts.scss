@@ -1,0 +1,17 @@
+@include font-face(
+  "Ethos",
+  "../fonts/ethos",
+  ("ttf", "eot", "woff2", "woff")
+);
+
+@include font-face(
+  "Museo Sans",
+  "../fonts/museosans",
+  ("ttf", "eot", "woff2", "woff")
+);
+
+@include font-face(
+  "Museo Sans Medium",
+  "../fonts/museosansmedium",
+  ("woff")
+);
